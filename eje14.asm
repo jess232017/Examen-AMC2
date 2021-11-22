@@ -7,7 +7,7 @@ imprimir macro m                ; definicion macro
 endm                            ; Finalizar macro
 
 ;*************** Segmento Data ****************************
-Data Segment    ;Indica el inicio del segmento de datos
+.data    ;Indica el inicio del segmento de datos
 
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
     mensaje2    db 0dh,0ah,"Ingrese un numero: $"
@@ -21,11 +21,9 @@ Data Segment    ;Indica el inicio del segmento de datos
     ten db 10
     t2 db 0
 
-Data ends
 
 ;************** Inicia el segmento codigo ******************
-Code Segment    ;indica el inicio del segmento de codigo
-    assume CS:Code,DS:Data
+.code          ; Inicia el segmento de codigo
 
     main:
 
@@ -119,6 +117,4 @@ Code Segment    ;indica el inicio del segmento de codigo
             int 21h    ;Activar Interrupcion 0x21
             ret
         endp
-        
-    Code ends
-end main
+    end main

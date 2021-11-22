@@ -1,3 +1,6 @@
+.model Small          ;Indiaca el modelo de memoria
+.stack          ;Indica el modelo de pila
+
 .data    ;Indica el inicio del segmento de datos
     
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
@@ -18,10 +21,10 @@
 
     main:
 
-        ;Codigo para imprimir el mensaje1
         mov ax,Data
         mov DS,ax
 
+        ;Codigo para imprimir el mensaje1
         mov dx,offset mensaje1    ;Direccion del texto a imprimir
         mov ah,09h  ;Escribir cadena a STDOUT
         int 21h     ;Activar Interrupcion 0x21

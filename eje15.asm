@@ -1,3 +1,6 @@
+.model Small          ;Indiaca el modelo de memoria
+.stack          ;Indica el modelo de pila
+
 .data          ; start of data segment
 
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
