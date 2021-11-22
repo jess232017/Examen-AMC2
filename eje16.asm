@@ -19,7 +19,7 @@ Data ends
 Code Segment    ;Inicia el segmento de codigo
     assume CS:Code,DS:Data
 
-    Inicio:
+    inicio:
 
         ;Codigo para imprimir el mensaje1
         mov ax,Data
@@ -34,7 +34,7 @@ Code Segment    ;Inicia el segmento de codigo
         call LeerNum    ;llamar al procedimiento
 
         mov longitud,AL     ;Guardar los digitos como la longitud del arreglo
-        mov cl,AL
+        mov cl,AL     ;asignar la longitud del arreglo al contador cx
         mov ch,00h
         mov di,1000h
  
@@ -45,8 +45,9 @@ Code Segment    ;Inicia el segmento de codigo
             int 21h     ;Activar Interrupcion 0x21
             call LeerNum    ;llamar al procedimiento
 
-            mov [di],AL
+            mov [di],AL ;Almacenar numero ingresado en el arreglo
             inc di     ;incrementa el valor del indice del destino
+
         loop LeerArreglo; al llegar aqui saltara a la etiqueta LeerArreglo hasta que (CX == 0)
 
         mov di,1000h
@@ -97,17 +98,19 @@ Code Segment    ;Inicia el segmento de codigo
 
         ;Declaracion del procedimiento LeerNum del teclado
         LeerNum proc
+            ;Leer primer digito
             mov ah,01h
-            int 21h
-            sub al,48
+            int 21h    ;Activar Interrupcion 0x21
+            sub al,48   ;Convertir a numero valido
             mov num1,al
 
+            ;Leer el segundo digito
             mov ah,01h
-            int 21h
-            sub al,48
+            int 21h    ;Activar Interrupcion 0x21
+            sub al,48   ;Convertir a numero valido
             mov num2,al     
 
-            mov al,num1
+            mov al, num1
             mul ten
             add al,num2     ;El numero se almacena en AL
             ret
@@ -115,7 +118,7 @@ Code Segment    ;Inicia el segmento de codigo
 
         ;Declaracion del procedimiento EscribirNum en pantalla
         EscribirNum proc
-            ;El numero a imprimir debe estar almacenado en AL
+            ;El numero a imprimir debe estar almacenado en AL antes
             mov ah,00
             div ten
 
@@ -124,14 +127,15 @@ Code Segment    ;Inicia el segmento de codigo
 
             mov dl,al
             add dl,48
-            mov ah,02h
-            int 21h
+            mov ah,02h  ;Escribir caracter a STDOUT
+            int 21h    ;Activar Interrupcion 0x21
 
             mov dl,t2
             add dl,48
-            mov ah,02h
-            int 21h
+            mov ah,02h  ;Escribir caracter a STDOUT
+            int 21h    ;Activar Interrupcion 0x21
+            ret
         endp
         
     Code ends
-end Inicio
+end inicio
