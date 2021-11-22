@@ -1,11 +1,11 @@
-Data Segment    ;Indica el inicio del segmento de datos
+.data    ;Indica el inicio del segmento de datos
     
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
     mensaje2    db 0dh,0ah,"Ingrese un numero: $"
-    mensaje3    db 0dh,0ah,"El indice empieza en: $"
+    mensaje3    db 0dh,0ah,"la posicion empieza en: $"
     mensaje4    db 0dh,0ah,"La suma de los numeros en las posiciones pares es de: $"
     saltoLinea  db 0dh,0ah," $"
-    indexInit   db 00    ;Modificar para indicar si el indice inicia en 00 como en la mayoria de los lenguajes o en 01 
+    indexInit   db 00    ;Modificar para indicar si la posicion inicia en 00 como en la mayoria de los lenguajes o en 01 
     longitud    db ?
     resultado   db ?
     
@@ -14,12 +14,9 @@ Data Segment    ;Indica el inicio del segmento de datos
     ten db 10
     t2 db 0
 
-Data ends
+.code          ; Inicia el segmento de codigo
 
-Code Segment    ;Inicia el segmento de codigo
-    assume CS:Code,DS:Data
-
-    inicio:
+    main:
 
         ;Codigo para imprimir el mensaje1
         mov ax,Data
@@ -136,6 +133,4 @@ Code Segment    ;Inicia el segmento de codigo
             int 21h    ;Activar Interrupcion 0x21
             ret
         endp
-        
-    Code ends
-end inicio
+    end main

@@ -1,6 +1,14 @@
+;*************** Macro ************************************
+; Definicion Macro para imprimir mensaje
+imprimir macro m                ; definicion macro
+    mov dx,offset m             ; Mover contenido a imprimir a DX
+    mov ah,09h                  ; Funcion 09 para escribir cadena a STDOUT
+    int 21h                     ; Activar Interrupcion 0x21
+endm                            ; Finalizar macro
+
+;*************** Segmento Data ****************************
 Data Segment    ;Indica el inicio del segmento de datos
 
-    
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
     mensaje2    db 0dh,0ah,"Ingrese un numero: $"
     mensaje3    db 0dh,0ah,"La suma de los numeros pares es de: $"
@@ -15,36 +23,30 @@ Data Segment    ;Indica el inicio del segmento de datos
 
 Data ends
 
-Code Segment    ;Inicia el segmento de codigo
+;************** Inicia el segmento codigo ******************
+Code Segment    ;indica el inicio del segmento de codigo
     assume CS:Code,DS:Data
 
-    inicio:
+    main:
 
-        ;Codigo para imprimir el mensaje1
         mov ax,Data
         mov DS,ax
 
-        mov dx,offset mensaje1    ;Direccion del texto a imprimir
-        mov ah,09h  ;Escribir cadena a STDOUT
-        int 21h     ;Activar Interrupcion 0x21
-        ;Fin
-        
-        ;Codigo para leer un numero de dos digitos
-        call LeerNum    ;llamar al procedimiento
+        imprimir mensaje1   ;Llama al macro imprimir, para mostrar mensaje
+        call LeerNum    ;Llamar al procedimiento leer numero
 
         mov longitud,AL     ;Guardar los digitos como la longitud del arreglo
-        mov cl,AL     ;asignar la longitud del arreglo al contador cx
+        mov cl,AL     ;Asignar la longitud del arreglo al contador cx
         mov ch,00h
         mov di,1000h
  
         ;Bucle para realizar la lectura del arreglo
         LeerArreglo: 
-            mov dx,offset mensaje2    ; Direccion del texto a imprimir
-            mov ah,09h  ;Escribir cadena a STDOUT
-            int 21h     ;Activar Interrupcion 0x21
-            call LeerNum    ;llamar al procedimiento
+            imprimir mensaje2   ;Llama al macro imprimir, para mostrar mensaje
 
+            call LeerNum    ;llamar al procedimiento
             mov [di],AL ;Almacenar numero ingresado en el arreglo
+            
             inc di     ;incrementa el valor del indice del destino
 
         loop LeerArreglo; al llegar aqui saltara a la etiqueta LeerArreglo hasta que (CX == 0)
@@ -53,9 +55,7 @@ Code Segment    ;Inicia el segmento de codigo
         mov cl,longitud     ;copiamos la longitud del arreglo en cx
         mov ch,00h
 
-        mov dx,offset saltoLinea   ; Direccion del texto a imprimir
-        mov ah,09h  ;Escribir cadena a STDOUT
-        int 21h    ;Activar Interrupcion 0x21
+        imprimir saltoLinea   ;Llama al macro imprimir, para mostrar mensaje
 
         mov al,[di] 
         mov resultado, 0
@@ -73,9 +73,7 @@ Code Segment    ;Inicia el segmento de codigo
         
         loop SumPar   ;al llegar aqui saltara a la etiqueta SumPar
 
-        mov dx,offset mensaje3    ; Direccion del texto a imprimir
-        mov ah,09h  ;Escribir cadena a STDOUT
-        int 21h    ;Activar Interrupcion 0x21
+        imprimir mensaje3   ;Llama al macro imprimir, para mostrar mensaje
 
         mov al,resultado
         call EscribirNum
@@ -123,4 +121,4 @@ Code Segment    ;Inicia el segmento de codigo
         endp
         
     Code ends
-end inicio
+end main

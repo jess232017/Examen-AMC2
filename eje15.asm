@@ -1,6 +1,5 @@
-Data Segment    ;Indica el inicio del segmento de datos
+.data          ; start of data segment
 
-    
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
     mensaje2    db 0dh,0ah,"Ingrese un numero: $"
     mensaje3    db 0dh,0ah,"La suma de los numeros impares es de: $"
@@ -13,17 +12,14 @@ Data Segment    ;Indica el inicio del segmento de datos
     ten db 10
     t2 db 0
 
-Data ends
+.code          ; Inicia el segmento de codigo
 
-Code Segment    ;Inicia el segmento de codigo
-    assume CS:Code,DS:Data
+    main:
 
-    inicio:
-
-        ;Codigo para imprimir el mensaje1
         mov ax,Data
         mov DS,ax
 
+        ;Codigo para imprimir el mensaje1
         mov dx,offset mensaje1    ;Direccion del texto a imprimir
         mov ah,09h  ;Escribir cadena a STDOUT
         int 21h     ;Activar Interrupcion 0x21
@@ -42,9 +38,10 @@ Code Segment    ;Inicia el segmento de codigo
             mov dx,offset mensaje2    ; Direccion del texto a imprimir
             mov ah,09h  ;Escribir cadena a STDOUT
             int 21h     ;Activar Interrupcion 0x21
-            call LeerNum    ;llamar al procedimiento
 
+            call LeerNum    ;llamar al procedimiento
             mov [di],AL ;Almacenar numero ingresado en el arreglo
+            
             inc di     ;incrementa el valor del indice del destino
 
         loop LeerArreglo; al llegar aqui saltara a la etiqueta LeerArreglo hasta que (CX == 0)
@@ -83,25 +80,6 @@ Code Segment    ;Inicia el segmento de codigo
         mov ah,4ch  ;Salir del programa
         int 21h    ;Activar Interrupcion 0x21
 
-        LeerNum proc
-            ;Leer primer digito
-            mov ah,01h
-            int 21h    ;Activar Interrupcion 0x21
-            sub al,48
-            mov num1,al
-
-            ;Leer el segundo digito
-            mov ah,01h
-            int 21h    ;Activar Interrupcion 0x21
-            sub al,48
-            mov num2,al     
-
-            mov al,num1
-            mul ten
-            add al,num2     ;El numero se almacena en AL
-            ret
-        endp
-
         EscribirNum proc
             ;El numero a imprimir debe estar almacenado en AL antes
             mov ah,00
@@ -121,6 +99,23 @@ Code Segment    ;Inicia el segmento de codigo
             int 21h    ;Activar Interrupcion 0x21
             ret
         endp
-        
-    Code ends
-end inicio
+
+        LeerNum proc
+            ;Leer primer digito
+            mov ah,01h
+            int 21h    ;Activar Interrupcion 0x21
+            sub al,48
+            mov num1,al
+
+            ;Leer el segundo digito
+            mov ah,01h
+            int 21h    ;Activar Interrupcion 0x21
+            sub al,48
+            mov num2,al     
+
+            mov al,num1
+            mul ten
+            add al,num2     ;El numero se almacena en AL
+            ret
+        endp
+    end main
