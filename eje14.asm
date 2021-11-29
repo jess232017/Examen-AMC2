@@ -7,7 +7,10 @@ imprimir macro m                ; definicion macro
 endm                            ; Finalizar macro
 
 ;*************** Segmento Data ****************************
-.data    ;Indica el inicio del segmento de datos
+.MODEL SMALL       ;Indiaca el modelo de memoria
+.STACK         ;Indica el modelo de pila
+
+.DATA    ;Indica el inicio del segmento de datos
 
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
     mensaje2    db 0dh,0ah,"Ingrese un numero: $"
@@ -23,12 +26,12 @@ endm                            ; Finalizar macro
 
 
 ;************** Inicia el segmento codigo ******************
-.code          ; Inicia el segmento de codigo
+.CODE         ; Inicia el segmento de codigo
 
-    main:
+    MAIN:
 
-        mov ax,Data
-        mov DS,ax
+        MOV AX, @DATA           ; ACUMULAR DIRECCION DE DATA
+        MOV DS, AX              ; MOVER LA DIRECCION A DS
 
         imprimir mensaje1   ;Llama al macro imprimir, para mostrar mensaje
         call LeerNum    ;Llamar al procedimiento leer numero

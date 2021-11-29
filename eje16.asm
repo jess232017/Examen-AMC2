@@ -1,7 +1,7 @@
-.model Small          ;Indiaca el modelo de memoria
-.stack          ;Indica el modelo de pila
+.MODEL SMALL       ;Indiaca el modelo de memoria
+.STACK         ;Indica el modelo de pila
 
-.data    ;Indica el inicio del segmento de datos
+.DATA    ;Indica el inicio del segmento de datos
     
     mensaje1    db 0dh,0ah,"Longitud del arreglo: $"
     mensaje2    db 0dh,0ah,"Ingrese un numero: $"
@@ -17,12 +17,12 @@
     ten db 10
     t2 db 0
 
-.code          ; Inicia el segmento de codigo
+.CODE         ; Inicia el segmento de codigo
 
-    main:
+    MAIN:
 
-        mov ax,Data
-        mov DS,ax
+        MOV AX, @DATA           ; ACUMULAR DIRECCION DE DATA
+        MOV DS, AX              ; MOVER LA DIRECCION A DS
 
         ;Codigo para imprimir el mensaje1
         mov dx,offset mensaje1    ;Direccion del texto a imprimir
@@ -136,4 +136,4 @@
             int 21h    ;Activar Interrupcion 0x21
             ret
         endp
-    end main
+    end MAIN
